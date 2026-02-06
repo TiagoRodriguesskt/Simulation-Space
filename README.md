@@ -1,6 +1,6 @@
 # 🌌 Simulation-Space: Explorando o Universo com Python
 
-Bem-vindo ao meu laboratório de simulações espaciais! Este repositório é o registro da minha jornada de aprendizado em **Python**, motivada por uma curiosidade profunda sobre como o nosso universo funciona.
+Bem-vindo ao meu laboratório de simulações espaciais! Este repositório é o registro da minha jornada de aprendizado em **Python**, motivada por uma curiosidade e estudando e me aprofundando sobre como o nosso universo funciona.
 
 ## 🧠 Sobre o Projeto
 Este projeto nasceu do meu interesse por:
