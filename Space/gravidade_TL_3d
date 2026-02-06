@@ -1,0 +1,144 @@
+import numpy as np # pip install numpy
+import matplotlib.pyplot as plt # pip install matplotlib
+from matplotlib.animation import FuncAnimation # pip install matplotlib
+from matplotlib.animation import FFMpegWriter  # noqa: F401 # type: ignore # pip install matplotlib
+
+# --- 1. Configurações Físicas e Constantes ---
+G = 6.67430e-11 # Constante Gravitacional
+M_TERRA = 5.972e24 # Massa da Terra
+M_LUA = 7.34822e22 # Massa da Lua em kg
+DISTANCIA_TL = 3.844e8 # Distância média em metros
+V_LUA = 1022 # Velocidade orbital da Lua em m/s
+
+# Inicialização dos vetores de estado
+pos_terra = np.array([0.0, 0.0, 0.0]) # type: ignore # Terra parada no centro
+pos_lua = np.array([DISTANCIA_TL, 0.0, 0.0]) # type: ignore # Lua começa afastada no eixo X
+vel_lua = np.array([0.0, V_LUA, V_LUA * 0.3]) # Inclinação para efeito 3D # Velocidade em Y e um pouco em Z para inclinar
+trajetoria_lua = [] # Rastro da Lua em 3D para animação 3D
+
+# --- 2. Estilização da Interface (Visual da Imagem) ---
+plt.style.use('dark_background')  # type: ignore # Estilo escuro para melhor visualização da imagem
+fig = plt.figure(figsize=(10, 9), facecolor='#0d0d0d') # type: ignore # Tamanho da figura e cor de fundo preto  
+# Ajusta o espaço para o painel inferior
+ax = fig.add_axes([0.1, 0.35, 0.8, 0.6], projection='3d')  # type: ignore # Painel 3D com dimensões e projecção 3D para melhor visualização
+ax.set_facecolor('#0d0d0d')  # type: ignore # Cor de fundo preto para melhor visualização da imagem
+
+# Customização dos eixos (Grids e Panes)
+ax.xaxis.pane.fill = False # type: ignore # Deixa as paredes do cubo transparentes para melhor visualização
+ax.yaxis.pane.fill = False # type: ignore # Deixa as paredes do cubo transparentes para melhor visualização
+ax.zaxis.pane.fill = False # type: ignore # Deixa as paredes do cubo transparentes para melhor visualização
+ax.xaxis.pane.set_edgecolor('#333333') # type: ignore # Cor das paredes do cubo para melhor visualização
+ax.yaxis.pane.set_edgecolor('#333333') # type: ignore # Cor das paredes do cubo para melhor visualização
+ax.zaxis.pane.set_edgecolor('#333333') # type: ignore # Cor das paredes do cubo para melhor visualização
+ax.grid(True, linestyle='-', alpha=0.1) # type: ignore # Grids para melhor visualização da imagem
+
+limit = DISTANCIA_TL * 1.3
+ax.set_xlim([-limit, limit]) # type: ignore 
+ax.set_ylim([-limit, limit]) # type: ignore
+ax.set_zlim([-limit, limit]) # pyright: ignore[reportAttributeAccessIssue]
+
+# Labels dos eixos
+ax.set_xlabel('X (meters x 1e8)', fontsize=8, alpha=0.7) # type: ignore 
+ax.set_zlabel('Z (meters x 1e8)', fontsize=8, alpha=0.7) # pyright: ignore[reportAttributeAccessIssue]
+
+# --- 3. Criação do Painel Inferior (Overlay de Texto) ---
+# Bloco de Código/Configurações (Esquerda)
+info_text = (
+    "1. Fig nounção gravitational pat:fiionataroppj\n" # Mudar o nome da figura para "Simulação Gravitacional 3D"
+    "2. Configurações Initials\n" # Mudar o nome para "Configurações Iniciais"
+    f"3   G = {G:.5e} 1T (frame))\n" # Mudar o nome para "Constante Gravitacional"
+    f"4   M_TERR2A        Contante np_5.9724   M_9.9724\n" # Mudar o nome para "Massa da Terra"
+    f"5   M_LIRRA         DISTANCIA_TL         m_7.3482\"\n" # Mudar o nome para "Massa da Lua"
+    f"6   7_34822         DISTANCIA_TL\"\n" # Mudar o nome para "Distância Média"
+    f"7   V=_LUA          F = 0.1022 - 0\n" # Mudar o nome para "Velocidade da Lua"
+    "    V=_LUA          + 0, hliξ ± 0.0\n" # Mudar o nome para "Velocidade da Lua"
+    "                    vetublot = np-aara, gravitadae.. aoplonia! copy))\n" # Mudar o nome para "Velocidade da Lua"
+    "                    trajetoria (lua)\n\n" # Mudar o nome para "Rastro da Lua"
+    "4. Animation : Fig, Fimulação GraviAinationai : Systema Terra-Lua\n" # Mudar o nome para "Simulação Gravitacional 3D"
+    "   Animation\n" # Mudar o nome para "Simulação Gravitacional 3D"
+    "   tt show" # Mudar o nome para "Simulação Gravitacional 3D"
+)
+
+fig.text(0.05, 0.05, info_text, color='#aaaaaa', family='monospace', fontsize=9, linespacing=1.2) # Texto da legenda do painel inferior
+
+# Bloco de Legenda (Direita)
+# Desenhamos um retângulo para simular o box da legenda da imagem
+fig.patches.extend([plt.Rectangle((0.6, 0.03), 0.35, 0.28,  # type: ignore # Desenhamos um retângulo para simular o box da legenda da imagem
+                                  fill=False, edgecolor='#444444', alpha=0.5, zorder=1000, transform=fig.transFigure)]) # Legenda do Painel Inferior
+
+fig.text(0.62, 0.27, "Legend", color='#64B5F6', fontsize=11, fontweight='bold') # Legenda do Painel Inferior - Título
+fig.text(0.62, 0.25, "_"*30, color='#444444') # Legenda do Painel Inferior - Linha Divisoria
+
+# Adicionando os marcadores da legenda manualmente para precisão visual
+fig.text(0.68, 0.17, 'fig "Terra"  "Terra + 10\nlua_plota', color='#bbbbbb', fontsize=9) # Titulo da legenda do Painel Inferior
+fig.text(0.68, 0.13, 'lua_plot, set, markersize-10', color='#bbbbbb', fontsize=9) # Sub-titulo da legenda do Painel Inferior
+fig.text(0.68, 0.10, 'rastro_plot = Lua', color='#bbbbbb', fontsize=9) # Sub-titulo da legenda do Painel Inferior
+
+# Círculos coloridos da legenda
+fig.add_artist(plt.Circle((0.64, 0.18), 0.008, color='#1E88E5', transform=fig.transFigure)) # type: ignore # Cor legenda Terra 
+fig.add_artist(plt.Circle((0.64, 0.14), 0.008, color='#4CAF50', transform=fig.transFigure)) # type: ignore # Cor legenda Lua 
+fig.add_artist(plt.Circle((0.64, 0.105), 0.008, color='#FFE082', transform=fig.transFigure)) # type: ignore # Cor legenda Rastro
+
+# Estrela decorativa (canto superior esquerdo)
+
+# Estrela decorativa (canto inferior direito)
+#fig.text(0.88, 0.06, '✦', color='#666666', fontsize=30, alpha=0.5)
+
+# --- 4. Elementos de Renderização ---
+# Desenha a Terra e a Lua em 3D para animação 3D com matplotlib e FuncAnimation
+terra = ax.scatter([0], [0], [0], color='#2196F3', s=600, edgecolors='white', linewidth=0.5, alpha=0.9) # type: ignore 
+lua_ponto, = ax.plot([], [], [], 'yo', markersize=10, color='#FFE082', markeredgecolor='white', markeredgewidth=0.2) 
+rastro, = ax.plot([], [], [], 'w-', alpha=0.8, linewidth=1.2) 
+
+# --- 5. Motor de Simulação ---
+def atualizar(frame):
+    global pos_lua, vel_lua
+# 1. Calcula a distância vetorial entre Terra e Lua
+    vetor_r = pos_terra - pos_lua
+    dist = np.linalg.norm(vetor_r)
+    aceleracao = (G * M_TERRA / dist**3) * vetor_r # 2. Lei de Newton: aceleração é proporcional à massa da Terra e inversa ao quadrado da distância
+    
+    # 3. Integração: Tempo x Aceleração muda a Velocidade. Tempo x Velocidade muda a Posição.
+    dt = 3600 * 4 # Cada frame avança 4 horas no tempo real
+    vel_lua += aceleracao * dt
+    pos_lua += vel_lua * dt
+    
+    trajetoria_lua.append(pos_lua.copy())
+    pontos = np.array(trajetoria_lua[-250:])
+    
+    # 4. Atualiza os desenhos na tela
+    lua_ponto.set_data([pos_lua[0]], [pos_lua[1]])
+    lua_ponto.set_3d_properties([pos_lua[2]]) # type: ignore
+    
+    rastro.set_data(pontos[:, 0], pontos[:, 1])
+    rastro.set_3d_properties(pontos[:, 2]) # type: ignore
+    
+    return lua_ponto, rastro
+
+ani = FuncAnimation(fig, atualizar, frames=300, interval=25, blit=False)
+
+# Abre a janela com a animação
+plt.show()
+
+
+
+''' 
+# 1. Definir o Writer (gravador)
+Aqui é para gravar um video da animação. Para isso, precisa instalar o pacote FFMpegWriter, 
+que precisa ser instalado no terminal com o comando "python -m pip install FFMpegWriter".
+Depois você precisa deixar o plot com "#plt.show()" para iniciar a gravação com animação.
+Ápos, voce pode exportar o video com o comando "ani.save('video.mp4', writer=writer)"
+'''
+# Script que abre a janela com a animação para iniciar a gravação
+
+'''
+metadata = dict(title='Simulação Gravitacional 3D', artist='Python Universe Builder', comment='NASA Style')
+writer = FFMpegWriter(fps=30, metadata=metadata, bitrate=2000)
+
+# 2. Salvar o arquivo
+print("Iniciando a renderização do vídeo...")
+# Salva a animação 'ani' criada no script anterior
+ani.save("simulacao_universo.mp4", writer=writer)
+print("Vídeo exportado com sucesso: simulacao_universo.mp4")
+
+'''
