@@ -23,8 +23,11 @@ Cada script aqui presente representa um passo no meu aprendizado, saindo do zero
 Abaixo, você pode ver uma das simulações geradas por este código, onde calculamos a interação orbital entre a Terra e a Lua usando vetores tridimensionais.
 
 
-<video src="simulacao_universo.mp4" width="100%" controls autoplay loop muted></video>
-https://github.com/user-attachments/assets/193f223c-17d9-4862-9829-350f4dde79b6
+
+
+
+https://github.com/user-attachments/assets/9b2be551-0fed-4d53-a167-e3e03cb8d798
+
 
 > *Nota: Caso o vídeo acima não carregue automaticamente no seu visualizador de Git, você pode encontrá-lo na pasta `Space/simulacao_universo.mp4`.*
 
