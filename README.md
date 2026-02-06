@@ -13,11 +13,7 @@ Cada script aqui presente representa um passo no meu aprendizado, saindo do zero
 
 ## 🛠️ Tecnologias Utilizadas
 * **Python 3:** Linguagem base.
-* **NumPy:** Pa
-
-https://github.com/user-attachments/assets/193f223c-17d9-4862-9829-350f4dde79b6
-
-ra cálculos matemáticos e vetoriais de alta performance.
+* **NumPy:** Para cálculos matemáticos e vetoriais de alta performance.
 * **Matplotlib:** O motor gráfico para as simulações e renderização de dados.
 * **FFmpeg:** Utilizado para a exportação das simulações em alta definição (MP4).
 
