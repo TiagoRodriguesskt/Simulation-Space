@@ -22,14 +22,7 @@ Cada script aqui presente representa um passo no meu aprendizado, saindo do zero
 ## 🎬 Demonstração: Simulação Gravitacional 3D (Terra-Lua)
 Abaixo, você pode ver uma das simulações geradas por este código, onde calculamos a interação orbital entre a Terra e a Lua usando vetores tridimensionais.
 
-
-
-
-
 https://github.com/user-attachments/assets/9b2be551-0fed-4d53-a167-e3e03cb8d798
-
-
-> *Nota: Caso o vídeo acima não carregue automaticamente no seu visualizador de Git, você pode encontrá-lo na pasta `Space/simulacao_universo.mp4`.*
 
 ---
 "O universo não é apenas mais estranho do que imaginamos, ele é mais estranho do que podemos imaginar."
